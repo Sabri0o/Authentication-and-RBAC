@@ -1,0 +1,16 @@
+{
+  "name": "jwt_based_authentication_and_role_based_access_authorization",
+  "version": "1.0.0",
+  "description": "package_name_is_self_explanatory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jwt",
+    "authentication",
+    "authorization"
+  ],
+  "author": "Sabri0o",
+  "license": "ISC"
+}
