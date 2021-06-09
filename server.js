@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const apiRoutes = require("./routes/app").routes
 require("dotenv").config();
 
 // parse requests of content-type - application/json
@@ -23,6 +24,8 @@ mongoose.connect(
     }
   }
 );
+
+apiRoutes(app)
 
 app.get("/", (req, res) => {
   res.status(200).json({ status: "testing" });
