@@ -1,4 +1,6 @@
 const { UserModel } = require("../models/dbShema");
+const jwt = require("jsonwebtoken");
+const jwtConfig = require("../config/jwtConfig");
 
 // validate password middleware
 const validatePassword = (req, res, next) => {
@@ -23,5 +25,25 @@ const checkIfEmailIsAlreadyUsed = async (req, res, next) => {
   next();
 };
 
+const verifyJwtToken = async (req, res, next) => {
+  let token = req.headers["x-access-token"];
+  if (!token) {
+    res.status(400).json({
+      message: "token is not provided",
+    });
+    return;
+  }
+  let verification = await jwt.verify(token, jwtConfig.secret);
+  if (!verification) {
+    res.status(400).json({
+      message: "not authorized",
+    });
+    return;
+  }
+  req.userID = verification.id;
+  next();
+};
+
 module.exports.validatePassword = validatePassword;
 module.exports.checkIfEmailIsAlreadyUsed = checkIfEmailIsAlreadyUsed;
+module.exports.verifyJwtToken = verifyJwtToken;

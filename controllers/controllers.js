@@ -1,5 +1,7 @@
 const { UserModel } = require("../models/dbShema");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const jwtConfig = require("../config/jwtConfig");
 
 const signUp = async (req, res) => {
   try {
@@ -13,7 +15,7 @@ const signUp = async (req, res) => {
     let saveUser = await user.save();
     console.log(saveUser);
     // res.json(saveUser);
-    res.redirect('/api/signIn');
+    res.redirect("/api/signIn");
   } catch (err) {
     console.log("error");
     res.status(400).json({ error: err.message });
@@ -35,8 +37,15 @@ const signIn = async (req, res) => {
           message: "invalid password",
         });
       } else {
+        let token = jwt.sign({ id: user._id }, jwtConfig.secret, {
+          expiresIn: 86400, // 24hours
+        });
         res.json({
           message: "welcome",
+          id: user._id,
+          email: user.email,
+          roles: user.roles,
+          accessToken: token,
         });
       }
     }
@@ -46,5 +55,11 @@ const signIn = async (req, res) => {
   }
 };
 
+const userBoard = (req, res) => {
+    res.send('User Board')
+};
+
 module.exports.signUp = signUp;
 module.exports.signIn = signIn;
+module.exports.userBoard = userBoard;
+

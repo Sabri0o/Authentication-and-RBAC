@@ -1,13 +1,18 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const apiRoutes = require("./routes/app").routes
+const apiRoutes = require("./routes/app").routes;
 require("dotenv").config();
 
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  res.set({ "x-access-token": "" });
+  next()
+});
 
 mongoose.connect(
   process.env.MONGO_URI,
@@ -25,7 +30,7 @@ mongoose.connect(
   }
 );
 
-apiRoutes(app)
+apiRoutes(app);
 
 app.get("/", (req, res) => {
   res.status(200).json({ status: "testing" });
