@@ -1,8 +1,8 @@
 const { UserModel } = require("../models/dbShema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const jwtConfig = require("../config/jwtConfig");
 
+// signUp controller
 const signUp = async (req, res) => {
   try {
     console.log(req.body);
@@ -14,14 +14,17 @@ const signUp = async (req, res) => {
     });
     let saveUser = await user.save();
     console.log(saveUser);
-    // res.json(saveUser);
-    res.redirect("/api/signIn");
+    res.json({
+      message: "user is registered successfully",
+      userInfo: saveUser,
+    });
   } catch (err) {
     console.log("error");
     res.status(400).json({ error: err.message });
   }
 };
 
+// signIn controller
 const signIn = async (req, res) => {
   try {
     console.log(req.body);
@@ -55,11 +58,30 @@ const signIn = async (req, res) => {
   }
 };
 
+// simulating home page
+const homeBoard = (req, res) => {
+  res.send("Home page");
+};
+
+// simulating user board
 const userBoard = (req, res) => {
-    res.send('User Board')
+  res.send("User Board");
+};
+
+// simulating supervisor board
+const supervisorBoard = (req, res) => {
+  res.send("supervisor Board");
+};
+
+// simulating admin board
+const adminBoard = (req, res) => {
+  res.send("admin Board");
 };
 
 module.exports.signUp = signUp;
 module.exports.signIn = signIn;
 module.exports.userBoard = userBoard;
+module.exports.homeBoard = homeBoard;
+module.exports.supervisorBoard = supervisorBoard;
+module.exports.adminBoard = adminBoard;
 

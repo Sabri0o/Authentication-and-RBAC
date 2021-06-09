@@ -25,6 +25,8 @@ const checkIfEmailIsAlreadyUsed = async (req, res, next) => {
   next();
 };
 
+
+// verify client token 
 const verifyJwtToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {

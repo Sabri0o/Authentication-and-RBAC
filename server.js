@@ -9,6 +9,7 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+// creating x-access-token header where we store the token value
 app.use((req, res, next) => {
   res.set({ "x-access-token": "" });
   next()
@@ -30,6 +31,7 @@ mongoose.connect(
   }
 );
 
+// app routes
 apiRoutes(app);
 
 app.get("/", (req, res) => {

@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
   roles: { type: Array, default: ["ROLE_USER"] },
 });
 
-// creating a User model
+// creating User model
 UserModel = mongoose.model("UserModel", userSchema);
 
 module.exports.UserModel = UserModel;
