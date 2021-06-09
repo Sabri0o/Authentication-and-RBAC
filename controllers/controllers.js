@@ -10,9 +10,10 @@ const signUp = (req, res) => {
   user.save((err) => {
     if (err) {
       console.log("error");
-      res.json({ error: err.message });
+      res.status(400).json({ error: err.message });
+    } else {
+      res.json(user);
     }
-    res.json(user);
   });
 };
 
