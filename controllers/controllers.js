@@ -1,6 +1,7 @@
 const { UserModel } = require("../models/dbShema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const jwtConfig = require("../config/jwtConfig")
 
 // signUp controller
 const signUp = async (req, res) => {
@@ -60,7 +61,7 @@ const signIn = async (req, res) => {
 
 // simulating home page
 const homeBoard = (req, res) => {
-  res.send("Home page");
+  res.send("Welcome to the home page");
 };
 
 // simulating user board

@@ -19,14 +19,13 @@ const validatePassword = (req, res, next) => {
 const checkIfEmailIsAlreadyUsed = async (req, res, next) => {
   let user = await UserModel.findOne({ email: req.body.email });
   if (user) {
-    res.json({ message: "email is already exist" });
+    res.json({ message: "email already exists" });
     return;
   }
   next();
 };
 
-
-// verify client token 
+// verify client token
 const verifyJwtToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
@@ -46,6 +45,31 @@ const verifyJwtToken = async (req, res, next) => {
   next();
 };
 
+// verify if the user has the role supervisor
+const checkIfSupervisor = async (req, res, next) => {
+    console.log(req.userID)
+    let user = await UserModel.findOne({_id:req.userID})
+    if(!user.roles.includes('ROLE_SUPERVISOR')){
+        res.json({message:"You are not supervisor"})
+        return
+    }
+    next()
+};
+
+// verify if the user has the role admin
+const checkIfAdmin = async (req, res, next) => {
+    let user = await UserModel.findOne({_id:req.userID})
+    if(!user.roles.includes('ROLE_ADMIN')){
+        res.json({message:"You are not admin"})
+        return
+    }
+    next()
+};
+
 module.exports.validatePassword = validatePassword;
 module.exports.checkIfEmailIsAlreadyUsed = checkIfEmailIsAlreadyUsed;
 module.exports.verifyJwtToken = verifyJwtToken;
+module.exports.checkIfSupervisor = checkIfSupervisor;
+module.exports.checkIfAdmin = checkIfAdmin;
+
+

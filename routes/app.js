@@ -3,6 +3,8 @@ const {
   validatePassword,
   checkIfEmailIsAlreadyUsed,
   verifyJwtToken,
+  checkIfSupervisor,
+  checkIfAdmin
 } = require("../middlewares/middlewaresFunctions");
 
 const routes = (app) => {
@@ -16,8 +18,12 @@ const routes = (app) => {
 
   app.get("/api/homeBoard", controllers.homeBoard);
 
-
   app.get("/api/userBoard", verifyJwtToken, controllers.userBoard);
+
+  app.get("/api/supervisorBoard", [verifyJwtToken,checkIfSupervisor], controllers.userBoard);
+
+  app.get("/api/adminBoard", [verifyJwtToken,checkIfAdmin], controllers.userBoard);
+
 };
 
 module.exports.routes = routes;
