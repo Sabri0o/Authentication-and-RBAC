@@ -1,10 +1,15 @@
 const { UserModel } = require("../models/dbShema");
+const bcrypt = require("bcryptjs");
+
+
 
 const signUp = (req, res) => {
   console.log(req.body);
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(req.body.password, salt);
   let user = new UserModel({
     email: req.body.email,
-    password: req.body.password,
+    password: hash,
   });
 
   user.save((err) => {
