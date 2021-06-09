@@ -10,6 +10,8 @@ const routes = (app) => {
     [validatePassword, checkIfEmailIsAlreadyUsed],
     controllers.signUp
   );
+
+  app.post("/api/signIn", controllers.signIn);
 };
 
 module.exports.routes = routes;
