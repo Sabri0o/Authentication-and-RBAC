@@ -1,8 +1,15 @@
-const controllers = require("../controllers/controllers")
-const {validatePassword} = require("../middlewares/middlewaresFunctions")
+const controllers = require("../controllers/controllers");
+const {
+  validatePassword,
+  checkIfEmailIsAlreadyUsed,
+} = require("../middlewares/middlewaresFunctions");
 
-const routes = (app)=>{
-    app.post('/api/signUp',validatePassword,controllers.signUp)
-}
+const routes = (app) => {
+  app.post(
+    "/api/signUp",
+    [validatePassword, checkIfEmailIsAlreadyUsed],
+    controllers.signUp
+  );
+};
 
-module.exports.routes = routes
+module.exports.routes = routes;
