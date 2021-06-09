@@ -8,6 +8,12 @@ var validateEmail = function (email) {
   return re.test(email);
 };
 
+// validate password
+var validatePassword = function (password) {
+  var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+  return re.test(password);
+};
+
 //creating user schema
 const userSchema = new mongoose.Schema({
   email: {
@@ -15,7 +21,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: [validateEmail, "Please fill a valid email address"],
   },
-  password: { type: String, required: true },
+  password: {
+    type: String,
+    required: true,
+    validate: [
+      validatePassword,
+      `Password should contain at least 8 characters, 1 number, 1 lowercase character (a-z), 1 uppercase character (A-Z) and contains only 0-9a-zA-Z`,
+    ],
+  },
   roles: { type: Array, default: ["ROLE_USER"] },
 });
 
