@@ -4,7 +4,7 @@ const {
   checkIfEmailIsAlreadyUsed,
   verifyJwtToken,
   checkIfSupervisor,
-  checkIfAdmin
+  checkIfAdmin,
 } = require("../middlewares/middlewaresFunctions");
 
 const routes = (app) => {
@@ -20,10 +20,35 @@ const routes = (app) => {
 
   app.get("/api/userBoard", verifyJwtToken, controllers.userBoard);
 
-  app.get("/api/supervisorBoard", [verifyJwtToken,checkIfSupervisor], controllers.userBoard);
+  app.get(
+    "/api/supervisorBoard",
+    [verifyJwtToken, checkIfSupervisor],
+    controllers.supervisorBoard
+  );
 
-  app.get("/api/adminBoard", [verifyJwtToken,checkIfAdmin], controllers.userBoard);
+  app.get(
+    "/api/adminBoard",
+    [verifyJwtToken, checkIfAdmin],
+    controllers.adminBoard
+  );
 
+  app.get(
+    "/api/getAllUsers",
+    [verifyJwtToken, checkIfSupervisor],
+    controllers.getAllUsers
+  );
+
+  app.put(
+    "/api/addSupervisor/:email",
+    [verifyJwtToken, checkIfAdmin],
+    controllers.addSupervisor
+  );
+
+  app.put(
+    "/api/removeSupervisor/:email",
+    [verifyJwtToken, checkIfAdmin],
+    controllers.removeSupervisor
+  );
 };
 
 module.exports.routes = routes;
