@@ -16,12 +16,15 @@ const signUp = async (req, res) => {
     let saveUser = await user.save();
     console.log(saveUser);
     res.json({
+      status: true,
       message: "user is registered successfully",
-      userInfo: saveUser,
     });
   } catch (err) {
-    console.log("error");
-    res.status(400).json({ error: err.message });
+    console.log("error:", err.message);
+    res.json({
+      status: false,
+      message: err.message,
+    });
   }
 };
 
@@ -31,13 +34,15 @@ const signIn = async (req, res) => {
     console.log(req.body);
     let user = await UserModel.findOne({ email: req.body.email });
     if (!user) {
-      res
-        .status(404)
-        .json({ message: "no account that correspond to that email" });
+      res.status(404).json({
+        status: false,
+        message: "no account corresponds to that email",
+      });
     } else {
       let checkPassword = bcrypt.compareSync(req.body.password, user.password);
       if (!checkPassword) {
         res.json({
+          status: false,
           message: "invalid password",
         });
       } else {
@@ -45,11 +50,14 @@ const signIn = async (req, res) => {
           expiresIn: 86400, // 24hours
         });
         res.json({
+          status: true,
           message: "welcome",
-          id: user._id,
-          email: user.email,
-          roles: user.roles,
-          accessToken: token,
+          userInfo: {
+            id: user._id,
+            email: user.email,
+            roles: user.roles,
+            accessToken: token,
+          },
         });
       }
     }
