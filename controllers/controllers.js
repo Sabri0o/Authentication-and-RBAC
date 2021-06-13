@@ -51,8 +51,7 @@ const signIn = async (req, res) => {
         });
         res.json({
           status: true,
-          message: "welcome",
-          userInfo: {
+          message: {
             id: user._id,
             email: user.email,
             roles: user.roles,
@@ -63,7 +62,7 @@ const signIn = async (req, res) => {
     }
   } catch (err) {
     console.log("error");
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ status: false, message: err.message });
   }
 };
 
