@@ -83,7 +83,7 @@ const supervisorBoard = (req, res) => {
 
 // simulating admin board
 const adminBoard = (req, res) => {
-  res.send("admin Board");
+  res.send("welcome to the admin Board");
 };
 
 // getAllUsers

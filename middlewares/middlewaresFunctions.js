@@ -33,7 +33,7 @@ const checkIfEmailIsAlreadyUsed = async (req, res, next) => {
 const verifyJwtToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
-    res.status(400).json({
+    res.json({
       status: false,
       message: "token is not provided",
     });
@@ -41,7 +41,7 @@ const verifyJwtToken = async (req, res, next) => {
   }
   let verification = await jwt.verify(token, jwtConfig.secret);
   if (!verification) {
-    res.status(400).json({
+    res.json({
       status: false,
       message: "not authorized",
     });
