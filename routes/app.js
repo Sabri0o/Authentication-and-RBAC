@@ -38,14 +38,20 @@ const routes = (app) => {
     controllers.getAllUsers
   );
 
+  app.get(
+    "/api/getAllSupervisors",
+    [verifyJwtToken, checkIfAdmin],
+    controllers.getAllSupervisors
+  );
+
   app.put(
-    "/api/addSupervisor/:email",
+    "/api/addSupervisor",
     [verifyJwtToken, checkIfAdmin],
     controllers.addSupervisor
   );
 
   app.put(
-    "/api/removeSupervisor/:email",
+    "/api/removeSupervisor",
     [verifyJwtToken, checkIfAdmin],
     controllers.removeSupervisor
   );

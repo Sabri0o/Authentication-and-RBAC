@@ -73,23 +73,38 @@ const homeBoard = (req, res) => {
 
 // simulating user board
 const userBoard = (req, res) => {
-  res.send("User Board");
+  res.send("welcome to the User Board");
 };
 
 // simulating supervisor board
 const supervisorBoard = (req, res) => {
-  res.send("supervisor Board");
+  res.send("Any content sent from server");
 };
 
 // simulating admin board
 const adminBoard = (req, res) => {
-  res.send("welcome to the admin Board");
+  res.send("Any content sent from server");
 };
 
 // getAllUsers
 const getAllUsers = async (req, res) => {
   try {
-    let users = await UserModel.find({ roles: { $nin: ["ROLE_ADMIN"] } });
+    let users = await UserModel.find({
+      roles: { $nin: ["ROLE_ADMIN", "ROLE_SUPERVISOR"] },
+    });
+    res.json(users);
+  } catch (err) {
+    console.log(err.message);
+    res.json({ error: err.message });
+  }
+};
+
+// getAllSupervisors
+const getAllSupervisors = async (req, res) => {
+  try {
+    let users = await UserModel.find({
+      roles: { $nin: ["ROLE_ADMIN"] ,$in: ["ROLE_SUPERVISOR"] },
+    });
     res.json(users);
   } catch (err) {
     console.log(err.message);
@@ -99,7 +114,8 @@ const getAllUsers = async (req, res) => {
 
 // add new supervisor role
 const addSupervisor = async (req, res) => {
-  let userToSupervisor = req.params.email;
+  let userToSupervisor = req.body.email;
+  console.log("req.body:", req.body);
   try {
     let user = await UserModel.findOne({ email: userToSupervisor });
     console.log(user);
@@ -107,7 +123,9 @@ const addSupervisor = async (req, res) => {
       user.roles.push("ROLE_SUPERVISOR");
       let saveUser = await user.save();
       console.log(saveUser);
-      res.json({ result: "Supervisor role is successfully Added" });
+      let allUsers = await UserModel.find();
+
+      res.json(allUsers);
     }
   } catch (err) {
     console.log(err.message);
@@ -117,7 +135,7 @@ const addSupervisor = async (req, res) => {
 
 // remove supervisor role
 const removeSupervisor = async (req, res) => {
-  let supervisorToUser = req.params.email;
+  let supervisorToUser = req.body.email;
   try {
     let user = await UserModel.findOne({ email: supervisorToUser });
     console.log(user);
@@ -125,7 +143,9 @@ const removeSupervisor = async (req, res) => {
       user.roles.splice(user.roles.indexOf("ROLE_SUPERVISOR"), 1);
       let saveUser = await user.save();
       console.log(saveUser);
-      res.json({ result: "supervisor role is successfully removed" });
+      let allSupervisors = await UserModel.find();
+
+      res.json(allSupervisors);
     }
   } catch (err) {
     console.log(err.message);
@@ -142,3 +162,4 @@ module.exports.adminBoard = adminBoard;
 module.exports.getAllUsers = getAllUsers;
 module.exports.addSupervisor = addSupervisor;
 module.exports.removeSupervisor = removeSupervisor;
+module.exports.getAllSupervisors = getAllSupervisors;

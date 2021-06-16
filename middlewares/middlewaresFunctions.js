@@ -53,10 +53,10 @@ const verifyJwtToken = async (req, res, next) => {
 
 // verify if the user has the role supervisor
 const checkIfSupervisor = async (req, res, next) => {
-  console.log(req.userID);
+  // console.log(req.userID);
   let user = await UserModel.findOne({ _id: req.userID });
   if (!user.roles.includes("ROLE_SUPERVISOR")) {
-    res.json({status: false, message: "You are not supervisor" });
+    res.json({ status: false, message: "You are not supervisor" });
     return;
   }
   next();
@@ -66,7 +66,7 @@ const checkIfSupervisor = async (req, res, next) => {
 const checkIfAdmin = async (req, res, next) => {
   let user = await UserModel.findOne({ _id: req.userID });
   if (!user.roles.includes("ROLE_ADMIN")) {
-    res.json({ status: false,message: "You are not admin" });
+    res.json({ status: false, message: "You are not admin" });
     return;
   }
   next();
