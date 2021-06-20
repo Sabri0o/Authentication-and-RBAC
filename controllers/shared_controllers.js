@@ -1,4 +1,6 @@
 const { UserModel } = require("../models/dbShema");
+const jwt = require("jsonwebtoken");
+const jwtConfig = require("../config/jwtConfig");
 
 // simulating home page
 const homeBoard = (req, res) => {
@@ -7,7 +9,7 @@ const homeBoard = (req, res) => {
 
 // update profile
 const updateProfile = async (req, res) => {
-  let userNewEmail = req.body.newEmail;
+  let userNewEmail = req.body.email;
   console.log("req.userId:", req.userID);
   try {
     if (userNewEmail) {
@@ -16,19 +18,22 @@ const updateProfile = async (req, res) => {
       user.email = userNewEmail;
       let saveUser = await user.save();
       console.log(saveUser);
+      let token = jwt.sign({ id: req.userID }, jwtConfig.secret, {
+        expiresIn: 86400, // 24hours
+      });
       res.json({
         status: true,
-        message: "email is updated successfully",
-      });
-    } else {
-      res.json({
-        status: false,
-        message: "no email provided",
+        message: {
+          id: saveUser._id,
+          email: saveUser.email,
+          roles: saveUser.roles,
+          accessToken: token,
+        },
       });
     }
   } catch (err) {
     console.log(err.message);
-    res.json({ error: err.message });
+    res.json({ message: err.message });
   }
 };
 

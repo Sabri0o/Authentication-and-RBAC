@@ -37,7 +37,11 @@ const routes = (app) => {
     admin_controllers.adminBoard
   );
 
-  app.put("/api/updateProfile", verifyJwtToken, shared_controllers.updateProfile);
+  app.put(
+    "/api/updateProfile",
+    [verifyJwtToken, checkIfEmailIsAlreadyUsed],
+    shared_controllers.updateProfile
+  );
 
   app.get(
     "/api/getAllUsers",
