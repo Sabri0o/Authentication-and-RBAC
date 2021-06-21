@@ -50,6 +50,12 @@ const routes = (app) => {
   );
 
   app.get(
+    "/api/getAllRoles",
+    [verifyJwtToken, checkIfAdmin],
+    admin_controllers.getAllRoles
+  );
+
+  app.get(
     "/api/getAllSupervisors",
     [verifyJwtToken, checkIfAdmin],
     admin_controllers.getAllSupervisors

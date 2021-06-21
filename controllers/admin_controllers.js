@@ -5,6 +5,17 @@ const adminBoard = (req, res) => {
   res.send("Any content sent from server");
 };
 
+// getAllRoles
+const getAllRoles = async (req, res) => {
+  try {
+    let allRoles = await UserModel.find({ roles: { $nin: ["ROLE_ADMIN"] } });
+    res.json(allRoles);
+  } catch (err) {
+    console.log(err.message);
+    res.json({ error: err.message });
+  }
+};
+
 // getAllSupervisors
 const getAllSupervisors = async (req, res) => {
   try {
@@ -63,3 +74,4 @@ module.exports.adminBoard = adminBoard;
 module.exports.removeSupervisor = removeSupervisor;
 module.exports.addSupervisor = addSupervisor;
 module.exports.getAllSupervisors = getAllSupervisors;
+module.exports.getAllRoles = getAllRoles;
