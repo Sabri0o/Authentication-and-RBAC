@@ -8,7 +8,7 @@ const adminBoard = (req, res) => {
 // getAllRoles
 const getAllRoles = async (req, res) => {
   try {
-    let allRoles = await UserModel.find({ roles: { $nin: ["ROLE_ADMIN"] } });
+    let allRoles = await UserModel.find({ roles: { $nin: ["ROLE_ADMIN"] } }).select(['email',"roles"]);
     res.json(allRoles);
   } catch (err) {
     console.log(err.message);
