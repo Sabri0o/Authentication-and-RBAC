@@ -8,8 +8,17 @@ const adminBoard = (req, res) => {
 // getAllRoles
 const getAllRoles = async (req, res) => {
   try {
-    let allRoles = await UserModel.find({ roles: { $nin: ["ROLE_ADMIN"] } }).select(['email',"roles"]);
-    res.json(allRoles);
+    let allRoles = await UserModel.find({
+      roles: { $nin: ["ROLE_ADMIN"] },
+    }).select(["email", "roles"]);
+    // alterAllRoles is for filtering purposes
+    let alterAllRoles = allRoles.map((user) =>
+      user.roles.includes("ROLE_SUPERVISOR")
+        ? { ...user._doc, roles: ["ROLE_SUPERVISOR"] }
+        : { ...user._doc, roles: ["ROLE_USER"] }
+    );
+    console.log(alterAllRoles);
+    res.json(alterAllRoles);
   } catch (err) {
     console.log(err.message);
     res.json({ error: err.message });
