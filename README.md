@@ -13,6 +13,10 @@ Read more about [session-vs-token-based-authentication.](https://sherryhsu.mediu
 
 In the project directory, you can run:
 
+### `npm i`
+
+to setup the environnement
+
 ### `npm run dev`
 
 Runs the app in the development mode.\
